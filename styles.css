@@ -95,6 +95,10 @@ body {
   max-width: 100%;
 }
 
+#play-section {
+  scroll-margin-top: max(0.75rem, env(safe-area-inset-top));
+}
+
 .card__title {
   margin: 0 0 1rem;
   font-size: 1.15rem;

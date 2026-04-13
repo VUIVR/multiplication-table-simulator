@@ -29,6 +29,7 @@
     statsTime: document.getElementById("stats-time"),
     resultsList: document.getElementById("results-list"),
     resultsEmpty: document.getElementById("results-empty"),
+    playSection: document.getElementById("play-section"),
   };
 
   var state = {
@@ -266,14 +267,56 @@
     els.btnAnswer.disabled = !on;
   }
 
-  function showCurrentTask() {
+  function prefersReducedMotion() {
+    return (
+      typeof window.matchMedia === "function" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    );
+  }
+
+  function scrollExamplesToTop(useSmooth) {
+    if (!els.playSection) return;
+    var behavior = "auto";
+    if (useSmooth && !prefersReducedMotion()) {
+      behavior = "smooth";
+    }
+    try {
+      els.playSection.scrollIntoView({ block: "start", behavior: behavior, inline: "nearest" });
+    } catch (e) {
+      els.playSection.scrollIntoView(true);
+    }
+  }
+
+  function focusAnswerField() {
+    try {
+      els.taskAnswer.focus({ preventScroll: true });
+    } catch (e) {
+      els.taskAnswer.focus();
+    }
+  }
+
+  function showCurrentTask(opt) {
+    var options = opt || {};
+    var smoothScroll = !!options.smoothScroll;
     var q = state.queue[state.index];
     if (!q) return;
     els.taskQuestion.textContent = q.text;
     els.taskAnswer.value = "";
-    requestAnimationFrame(function () {
-      els.taskAnswer.focus();
-    });
+
+    scrollExamplesToTop(smoothScroll);
+
+    var delayMs = 0;
+    if (smoothScroll && !prefersReducedMotion()) {
+      delayMs = 380;
+    } else {
+      delayMs = 50;
+    }
+
+    window.setTimeout(function () {
+      requestAnimationFrame(function () {
+        focusAnswerField();
+      });
+    }, delayMs);
   }
 
   function renderResults() {
@@ -408,7 +451,7 @@
     els.resultsEmpty.hidden = false;
     els.resultsList.innerHTML = "";
 
-    showCurrentTask();
+    showCurrentTask({ smoothScroll: true });
   }
 
   function togglePause() {
@@ -433,7 +476,10 @@
       setTaskControlsEnabled(true);
       els.playStatus.textContent = "Решайте примеры.";
       if (state.useTimer) startTick();
-      els.taskAnswer.focus();
+      scrollExamplesToTop(false);
+      window.setTimeout(function () {
+        focusAnswerField();
+      }, 50);
     }
   }
 
@@ -449,10 +495,26 @@
     }
   });
 
+  function sanitizeAnswerInput() {
+    var el = els.taskAnswer;
+    if (!el) return;
+    var v = el.value.replace(/\D/g, "");
+    if (el.value !== v) {
+      el.value = v;
+    }
+  }
+
+  els.taskAnswer.addEventListener("input", sanitizeAnswerInput);
+
   els.taskAnswer.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
       submitAnswer();
+      return;
+    }
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
+    if (e.key.length === 1 && !/[0-9]/.test(e.key)) {
+      e.preventDefault();
     }
   });
 

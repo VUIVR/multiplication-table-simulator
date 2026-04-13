@@ -72,7 +72,7 @@
       </div>
     </section>
 
-    <section class="card card--play" aria-labelledby="play-title">
+    <section class="card card--play" id="play-section" aria-labelledby="play-title">
       <h2 id="play-title" class="card__title">Примеры</h2>
 
       <div class="play__toolbar">
@@ -90,7 +90,7 @@
         <p class="task__question" id="task-question"></p>
         <label class="task__answer-label" for="task-answer">Ответ</label>
         <div class="task__answer-row">
-          <input type="number" id="task-answer" class="input input--answer" inputmode="numeric" autocomplete="off" tabindex="0">
+            <input type="text" id="task-answer" class="input input--answer" inputmode="numeric" pattern="[0-9]*" maxlength="4" autocomplete="off" autocorrect="off" spellcheck="false" tabindex="0">
           <button type="button" class="btn btn--primary btn--answer" id="btn-answer">Ответить</button>
         </div>
       </div>
