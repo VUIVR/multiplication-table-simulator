@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Тренировка: таблица умножения</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@500;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="page">
+    <header class="header">
+      <h1>Таблица умножения</h1>
+      <p class="header__hint">Выберите настройки и нажмите «Начать»</p>
+    </header>
+
+    <section class="card card--settings" aria-labelledby="settings-title">
+      <h2 id="settings-title" class="card__title">Настройки</h2>
+
+      <div class="field">
+        <span class="field__label" id="digits-label">Какие цифры тренируем</span>
+        <div class="digits" role="group" aria-labelledby="digits-label">
+          <label class="digit-pill"><input type="checkbox" name="digit" value="2" checked>2</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="3" checked>3</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="4" checked>4</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="5" checked>5</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="6" checked>6</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="7" checked>7</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="8" checked>8</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="9" checked>9</label>
+          <label class="digit-pill"><input type="checkbox" name="digit" value="10" checked>10</label>
+        </div>
+        <p class="field__error" id="digits-error" hidden>Выберите хотя бы одну цифру</p>
+      </div>
+
+      <div class="field field--row">
+        <span class="field__label">Действие</span>
+        <div class="checks ops-checks" id="ops-checks" role="group" aria-describedby="ops-error">
+          <label class="check">
+            <input type="checkbox" id="op-mul" checked>
+            <span>Умножение</span>
+          </label>
+          <label class="check">
+            <input type="checkbox" id="op-div">
+            <span>Деление</span>
+          </label>
+        </div>
+        <p class="field__error" id="ops-error" hidden>Выберите умножение или деление (хотя бы одно)</p>
+      </div>
+
+      <div class="field field--inline">
+        <label class="field__label" for="count">Сколько примеров (от 10)</label>
+        <input type="number" id="count" class="input input--num" min="10" max="999" value="20">
+      </div>
+      <p class="field__error" id="count-error" hidden>Нужно не меньше 10 примеров</p>
+
+      <div class="field field--row">
+        <label class="check check--timer">
+          <input type="checkbox" id="timer-enabled">
+          <span>Включить таймер</span>
+        </label>
+        <div class="timer-fields" id="timer-fields">
+          <label class="sr-only" for="timer-min">Минуты</label>
+          <span class="timer-fields__text">На время:</span>
+          <input type="number" id="timer-min" class="input input--small" min="0" max="59" value="5" aria-label="Минуты">
+          <span>мин</span>
+          <input type="number" id="timer-sec" class="input input--small" min="0" max="59" value="0" aria-label="Секунды">
+          <span>сек</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="card card--play" aria-labelledby="play-title">
+      <h2 id="play-title" class="card__title">Примеры</h2>
+
+      <div class="play__toolbar">
+        <button type="button" class="btn btn--primary" id="btn-start">Начать</button>
+        <button type="button" class="btn btn--secondary" id="btn-pause" disabled>Пауза</button>
+        <button type="button" class="btn btn--danger" id="btn-stop" disabled>Стоп</button>
+      </div>
+
+      <div class="play__timer" id="play-timer-wrap" hidden>
+        <span class="play__timer-label">Осталось времени:</span>
+        <span class="play__timer-value" id="play-timer-display">—</span>
+      </div>
+
+      <div class="task" id="task-wrap" hidden>
+        <p class="task__question" id="task-question"></p>
+        <label class="task__answer-label" for="task-answer">Ответ</label>
+        <div class="task__answer-row">
+          <input type="number" id="task-answer" class="input input--answer" inputmode="numeric" autocomplete="off" tabindex="0">
+          <button type="button" class="btn btn--primary btn--answer" id="btn-answer">Ответить</button>
+        </div>
+      </div>
+
+      <p class="play__status" id="play-status">Нажмите «Начать», чтобы начать тренировку.</p>
+    </section>
+
+    <section class="card card--results" aria-labelledby="results-title">
+      <h2 id="results-title" class="card__title">Результаты</h2>
+      <div class="stats" id="stats-wrap" hidden>
+        <p class="stats__line" id="stats-summary"></p>
+        <p class="stats__line" id="stats-time" hidden></p>
+      </div>
+      <div class="results-scroll">
+        <ul class="results-list" id="results-list"></ul>
+        <p class="results-empty" id="results-empty">Здесь появятся примеры после тренировки.</p>
+      </div>
+    </section>
+
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
