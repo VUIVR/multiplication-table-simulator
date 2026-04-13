@@ -420,7 +420,6 @@ body.is-training .card--results {
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  margin-bottom: 1rem;
   padding: 0.55rem 0.85rem;
   background: #fff8e6;
   border-radius: var(--radius-sm);
@@ -465,6 +464,7 @@ body.is-training .card--results {
   margin: 0.75rem 0 0;
   color: var(--muted);
   font-size: 0.95rem;
+  margin-bottom: 1rem;
 }
 
 .stats {
