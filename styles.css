@@ -24,6 +24,7 @@
 
 html {
   font-size: 106%;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
@@ -33,12 +34,14 @@ body {
   color: var(--text);
   background: linear-gradient(165deg, #d4ecfb 0%, var(--bg) 45%, #f0e8ff 100%);
   line-height: 1.45;
+  overflow-x: hidden;
 }
 
 .page {
   max-width: 640px;
   margin: 0 auto;
-  padding: 1.25rem 1rem 2.5rem;
+  padding: 1rem clamp(0.65rem, 3vw, 1rem) 2rem;
+  min-width: 0;
 }
 
 .card--results {
@@ -85,9 +88,11 @@ body {
   background: var(--surface);
   border-radius: var(--radius);
   box-shadow: var(--shadow);
-  padding: 1.25rem 1.35rem;
+  padding: 1.1rem clamp(0.75rem, 3vw, 1.35rem);
   margin-bottom: 1rem;
   border: 1px solid rgba(255, 255, 255, 0.8);
+  min-width: 0;
+  max-width: 100%;
 }
 
 .card__title {
@@ -282,40 +287,69 @@ body {
 .task__answer-row {
   display: flex;
   align-items: stretch;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   gap: 0.5rem;
-  max-width: 100%;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
 }
 
 .input--answer {
-  flex: 1 1 7rem;
-  min-width: 5rem;
-  max-width: 14rem;
+  flex: 1 1 0%;
+  min-width: 0;
+  max-width: min(14rem, 100%);
+  width: auto;
   font-size: 1.75rem;
   font-weight: 800;
   text-align: center;
-  padding: 0.6rem 0.85rem;
+  padding: 0.5rem 0.65rem;
+  line-height: 1.25;
+  min-height: 2.75rem;
+  max-height: 3.5rem;
+  appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+.input--answer::-webkit-outer-spin-button,
+.input--answer::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 .btn--answer {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
   align-self: stretch;
-  padding: 0.55rem 1.15rem;
+  min-width: 0;
+  padding: 0.55rem 0.9rem;
   font-size: 1.1rem;
 }
 
-@media (max-width: 480px) {
+@media (max-width: 560px) {
+  .task__question {
+    font-size: 1.65rem;
+  }
+
   .task__answer-row {
     flex-direction: column;
+    flex-wrap: nowrap;
     align-items: stretch;
   }
 
   .task__answer-row .input--answer {
-    max-width: none;
+    flex: 0 0 auto;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    font-size: 1.35rem;
+    padding: 0.55rem 0.75rem;
+    min-height: 2.85rem;
+    max-height: none;
   }
 
   .btn--answer {
     width: 100%;
+    flex: 0 0 auto;
   }
 }
 
@@ -393,6 +427,8 @@ body {
 
 .task {
   padding: 1rem 0 0.25rem;
+  min-width: 0;
+  width: 100%;
 }
 
 .task__question {
@@ -400,12 +436,7 @@ body {
   font-size: 2rem;
   font-weight: 800;
   letter-spacing: 0.02em;
-}
-
-@media (max-width: 480px) {
-  .task__question {
-    font-size: 1.65rem;
-  }
+  word-break: break-word;
 }
 
 .task__answer-label {
