@@ -37,6 +37,12 @@ body {
   overflow-x: hidden;
 }
 
+body.is-training .header,
+body.is-training .card--settings,
+body.is-training .card--results {
+  display: none;
+}
+
 .page {
   max-width: 640px;
   margin: 0 auto;
@@ -96,6 +102,10 @@ body {
 }
 
 #play-section {
+  scroll-margin-top: max(0.75rem, env(safe-area-inset-top));
+}
+
+#results-section {
   scroll-margin-top: max(0.75rem, env(safe-area-inset-top));
 }
 

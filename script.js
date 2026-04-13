@@ -30,6 +30,7 @@
     resultsList: document.getElementById("results-list"),
     resultsEmpty: document.getElementById("results-empty"),
     playSection: document.getElementById("play-section"),
+    resultsSection: document.getElementById("results-section"),
   };
 
   var state = {
@@ -354,6 +355,10 @@
     els.resultsEmpty.hidden = total > 0;
   }
 
+  function setTrainingLayoutActive(on) {
+    document.body.classList.toggle("is-training", !!on);
+  }
+
   function finishSession(reason) {
     if (state.mode === "idle" || state.mode === "done") return;
 
@@ -380,7 +385,25 @@
       els.playStatus.textContent = "Готово! Молодец!";
     }
 
+    setTrainingLayoutActive(false);
     renderResults();
+    scrollResultsSectionIntoView();
+  }
+
+  function scrollResultsSectionIntoView() {
+    if (!els.resultsSection) return;
+    window.setTimeout(function () {
+      var smooth = !prefersReducedMotion();
+      try {
+        els.resultsSection.scrollIntoView({
+          block: "start",
+          behavior: smooth ? "smooth" : "auto",
+          inline: "nearest",
+        });
+      } catch (e) {
+        els.resultsSection.scrollIntoView(true);
+      }
+    }, 80);
   }
 
   function submitAnswer() {
@@ -411,6 +434,8 @@
 
   function beginSession() {
     if (!validateSettings()) return;
+
+    setTrainingLayoutActive(true);
 
     var digits = getSelectedDigits();
     var n = Math.min(999, Math.max(MIN_EXAMPLES, parseInt(els.count.value, 10) || MIN_EXAMPLES));
