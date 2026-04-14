@@ -263,9 +263,23 @@
     return ok;
   }
 
+  function updateAnswerSubmitEnabled() {
+    if (!els.taskAnswer || !els.btnAnswer) return;
+    if (els.taskAnswer.disabled) {
+      els.btnAnswer.disabled = true;
+      return;
+    }
+    var hasValue = els.taskAnswer.value.trim() !== "";
+    els.btnAnswer.disabled = !hasValue;
+  }
+
   function setTaskControlsEnabled(on) {
     els.taskAnswer.disabled = !on;
-    els.btnAnswer.disabled = !on;
+    if (!on) {
+      els.btnAnswer.disabled = true;
+    } else {
+      updateAnswerSubmitEnabled();
+    }
   }
 
   function prefersReducedMotion() {
@@ -303,6 +317,7 @@
     if (!q) return;
     els.taskQuestion.textContent = q.text;
     els.taskAnswer.value = "";
+    updateAnswerSubmitEnabled();
 
     scrollExamplesToTop(smoothScroll);
 
@@ -412,6 +427,7 @@
     if (!q) return;
 
     var raw = els.taskAnswer.value.trim();
+    if (raw === "") return;
     var given = raw === "" ? NaN : parseInt(raw, 10);
     var ok = !isNaN(given) && given === q.answer;
 
@@ -529,11 +545,15 @@
     }
   }
 
-  els.taskAnswer.addEventListener("input", sanitizeAnswerInput);
+  els.taskAnswer.addEventListener("input", function () {
+    sanitizeAnswerInput();
+    updateAnswerSubmitEnabled();
+  });
 
   els.taskAnswer.addEventListener("keydown", function (e) {
     if (e.key === "Enter") {
       e.preventDefault();
+      if (els.taskAnswer.value.trim() === "") return;
       submitAnswer();
       return;
     }
